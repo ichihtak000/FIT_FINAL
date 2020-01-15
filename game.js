@@ -38,15 +38,12 @@ var myGameArea = {
 
 function component(width, height, color, x, y, type) {
     this.type = type;
-    this.score = 0;
     this.width = width;
     this.height = height;
     this.speedX = 0;
     this.speedY = 0;    
     this.x = x;
     this.y = y;
-    this.gravity = 0;
-    this.gravitySpeed = 0;
     this.updateGhost = function(){
       ctx = myGameArea.context;
       var img = document.createElement("IMG");s
@@ -87,13 +84,6 @@ function component(width, height, color, x, y, type) {
         this.y += this.speedY;
       
     }
-    this.hitBottom = function() {
-        var rockbottom = myGameArea.canvas.height - this.height;
-        if (this.y > rockbottom) {
-            this.y = rockbottom;
-            this.gravitySpeed = 0;
-        }
-    }
     this.crashWith = function(otherobj) {
         var myleft = this.x;
         var myright = this.x + (this.width);
@@ -112,7 +102,7 @@ function component(width, height, color, x, y, type) {
 }
 
 function updateGameArea() {
-    var x, height, gap, minHeight, maxHeight, minGap, maxGap,begin;
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
             window.location.href = "lose.html";
@@ -140,8 +130,6 @@ function updateGameArea() {
         myObstacles[i].update();
     }
     control();
-    //myScore.text="SCORE: " + myGameArea.frameNo;
-    //myScore.update();
     myGamePiece.newPos();
     myGamePiece.update();
     myGamePiece.updatePac(direction);
@@ -154,6 +142,7 @@ function everyinterval(n) {
     if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
     return false;
 }
+
 function control(){
   if (myGameArea.key && myGameArea.key == 37) {x_speed = -2;y_speed = 0; direction = 3;}
   if (myGameArea.key && myGameArea.key == 39) {x_speed = 2;y_speed = 0; direction = 4;}
